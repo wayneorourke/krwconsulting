@@ -77,9 +77,32 @@
       object-fit: contain;
     }
 
+    /* Carousel */
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 780px;
+      text-align: center;
+    }
+
+    .slide {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .slide.active {
+      display: flex;
+      animation: fadeIn 0.7s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     /* Hero headline */
     .hero-text {
-      max-width: 780px;
       margin-bottom: 36px;
     }
 
@@ -109,8 +132,27 @@
       color: #3a3a3a;
     }
 
-    .bio .gaicd {
-      color: #8b5a2b;
+    /* Carousel dots */
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 36px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #c8c0b0;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background-color 0.3s;
+    }
+
+    .dot.active {
+      background-color: #2a2a2a;
     }
 
     /* Services footer */
@@ -201,16 +243,45 @@
       <img src="KRWConsultingLogo.png" alt="KRW Consulting">
     </div>
 
-    <div class="hero-text">
-      <span class="line1">A trusted opinion on</span>
-      <span class="line2">AI &amp; Data, for executives and boards.</span>
-    </div>
+    <div class="carousel">
 
-    <p class="bio">
-      Three decades of experience across AI, Data &amp; Technology consulting
-      in Europe, North America and Australia. Advisor on AI &amp; data strategy, governance,
-      and investment, in language executives can act on.
-    </p>
+      <div class="slide active">
+        <div class="hero-text">
+          <span class="line1">A trusted voice on</span>
+          <span class="line2">AI &amp; Data, in language<br>that actually lands.</span>
+        </div>
+        <p class="bio">Three decades translating between technical teams and the people who lead them.
+        Not theory, grounded advice delivered in plain terms that executives and boards
+        can act on with confidence.</p>
+      </div>
+
+      <div class="slide">
+        <div class="hero-text">
+          <span class="line1">Straight talk on</span>
+          <span class="line2">AI &amp; Data,<br>for leaders who need outcomes.</span>
+        </div>
+        <p class="bio">Theory is easy. Making it work in your organisation, with your people, is different.
+        Three decades across three continents, bridging the gap between what is possible
+        and what is practical.</p>
+      </div>
+
+      <div class="slide">
+        <div class="hero-text">
+          <span class="line1">Trusted counsel on AI &amp; Data,</span>
+          <span class="line2">for humans navigating<br>a technical world.</span>
+        </div>
+        <p class="bio">Everyone in the room is trying to do the right thing. They just see it from where they stand.
+        For three decades I have helped teams find the shared ground between perspectives
+        and turn it into decisions that stick.</p>
+      </div>
+
+      <div class="carousel-dots">
+        <button class="dot active" aria-label="Slide 1"></button>
+        <button class="dot" aria-label="Slide 2"></button>
+        <button class="dot" aria-label="Slide 3"></button>
+      </div>
+
+    </div>
   </main>
 
   <footer>
@@ -234,5 +305,37 @@
     </div>
     <p class="contact"><a href="mailto:info@krwconsulting.com.au">info@krwconsulting.com.au</a></p>
   </footer>
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    let current = 0;
+    let timer;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = index;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function next() {
+      goTo((current + 1) % slides.length);
+    }
+
+    function startTimer() {
+      timer = setInterval(next, 10000);
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        clearInterval(timer);
+        goTo(i);
+        startTimer();
+      });
+    });
+
+    startTimer();
+  </script>
 </body>
 </html>
